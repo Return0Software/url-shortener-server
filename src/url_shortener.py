@@ -1,4 +1,5 @@
 import flask
+import urllib
 from repository import URLRepository
 
 app = flask.Flask(__name__)
@@ -7,10 +8,13 @@ app = flask.Flask(__name__)
 def shortener():
     body = flask.request.get_json()
     try:
-        URLRepository.save(body["url"], body["title"])
+        if body["title"] == None or body["url"] == None:
+            flask.abort(500)
+        title = urllib.parse(body["title"])
+        URLRepository.save(body["url"], title)
+        return flask.jsonify({"title": title})
     except RuntimeError:
         flask.abort(410)
-    return flask.jsonify({"title": body["title"]})
 
 @app.route("/s/<title>", methods=["GET"])
 def redirect(title: str):
