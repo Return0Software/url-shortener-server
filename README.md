@@ -6,10 +6,16 @@
 POST /s - creates a new shortened URL
     200 - if title was successfully created
     410 - if title exists in DB
-{
-    "url": string,
-    "title": string
-}
+
+    Body
+        {
+            "url": string,
+            "title": string
+        }
+    Response
+        {
+            "title": string
+        }
 
 GET /s/<title> - redirects browser to linked URL
     404 - if title does not exist
