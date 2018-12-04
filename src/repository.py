@@ -1,8 +1,12 @@
 import pymongo
 import hashlib
 from typing import Optional
+import os
 
-client = pymongo.MongoClient("mongodb://root:root@localhost:27017")
+username = os.getenv('MONGO_INITDB_ROOT_USERNAME', 'root')
+password = os.getenv('MONGO_INITDB_ROOT_PASSWORD', 'root')
+
+client = pymongo.MongoClient(f"mongodb://{username}:{password}@localhost:27017")
 db = client["URLShortener"]
 collection = db["URLs"]
 
@@ -14,6 +18,8 @@ class URLRepository:
             "url": url,
             "title": title
         }
+
+        print(client.list_database_names())
 
         if cls.findOne(title) != None:
             raise RuntimeError()

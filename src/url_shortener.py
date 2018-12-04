@@ -10,7 +10,7 @@ def shortener():
     try:
         if body["title"] == None or body["url"] == None:
             flask.abort(500)
-        title = urllib.parse(body["title"])
+        title = urllib.parse.quote(body["title"])
         URLRepository.save(body["url"], title)
         return flask.jsonify({"title": title})
     except RuntimeError:
