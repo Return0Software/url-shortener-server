@@ -8,14 +8,14 @@ POST /s - creates a new shortened URL
     410 - if title exists in DB
 
     Body
-        {
-            "url": string,
-            "title": string
-        }
+    {
+        "url": string,
+        "title": string
+    }
     Response
-        {
-            "title": string
-        }
+    {
+        "title": string
+    }
 
 GET /s/<title> - redirects browser to linked URL
     404 - if title does not exist
@@ -32,5 +32,5 @@ pip3 install -r requirements.txt
 
 ```bash
 docker-compose up -d # starts a mongoDB instance and a mongo-express instance
-./run.sh
+./scripts/run.sh
 ```
