@@ -6,12 +6,15 @@ app = flask.Flask(__name__)
 @app.route("/s", methods=["POST"])
 def shortener():
     body = flask.request.get_json()
-    hashed_url = URLRepository.save(body["url"])
-    return flask.jsonify({"hashed_url": hashed_url})
+    try:
+        URLRepository.save(body["url"], body["title"])
+    except RuntimeError:
+        flask.abort(410)
+    return flask.jsonify({"title": body["title"]})
 
-@app.route("/s/<hashed_url>", methods=["GET"])
-def redirect(hashed_url: str):
-    url = URLRepository.findOne(hashed_url)
+@app.route("/s/<title>", methods=["GET"])
+def redirect(title: str):
+    url = URLRepository.findOne(title)
     if url != None:
         if url.startswith("http://") or url.startswith("https://"):
             return flask.redirect(url)

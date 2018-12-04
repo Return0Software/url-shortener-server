@@ -8,19 +8,21 @@ collection = db["URLs"]
 
 class URLRepository:
 
-    @staticmethod
-    def save(url: str):
-        hashed_url = hashlib.sha512(bytes(url, "utf8")).hexdigest()
+    @classmethod
+    def save(cls, url: str, title: str):
         item = {
             "url": url,
-            "hashed_url": hashed_url
+            "title": title
         }
-        collection.insert_one(item)
-        return hashed_url
 
-    @staticmethod
-    def findOne(hashed_url: str) -> Optional[str]:
-        item = collection.find_one({ "hashed_url": hashed_url })
+        if cls.findOne(title) != None:
+            raise RuntimeError()
+
+        collection.insert_one(item)
+
+    @classmethod
+    def findOne(cls,title: str) -> Optional[str]:
+        item = collection.find_one({ "title": title })
         if item == None:
             return None
 
